@@ -77,12 +77,12 @@ Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    r,c = random.randint(1,8), random.randint(1,8)
-    orientation = random.randint(0,2)
+    rows,cols = random.randint(1,8), random.randint(1,8)
+    orientation = random.randint(0,1)
     if orientation==0:
-        ship = [[r-1,c],[r,c],[r+1,c]]
+        ship = [[rows-1,cols],[rows,cols],[rows+1,cols]]
     else:
-        ship = [[r,c-1],[r,c],[r,c+1]]
+        ship = [[rows,cols-1],[rows,cols],[rows,cols+1]]
     return ship
 
 
