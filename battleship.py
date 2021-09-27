@@ -78,7 +78,7 @@ Returns: 2D list of ints
 '''
 def createShip():
     r,c = random.randint(1,8), random.randint(1,8)
-    orientation = random.randint(0,2)
+    orientation = random.randint(0,1)
     if orientation==0:
         ship = [[r-1,c],[r,c],[r+1,c]]
     else:
@@ -296,4 +296,4 @@ if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
-    test.testAddShips()
+    test.testCreateShip()
