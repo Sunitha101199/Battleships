@@ -105,7 +105,6 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    # grid = [[(i,j) for j in range(2)] for i in range(numShips)] 
     currentShips = 0
     while currentShips < numShips:
         ship = createShip()
