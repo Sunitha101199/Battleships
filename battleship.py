@@ -85,7 +85,6 @@ def createShip():
         ship = [[r,c-1],[r,c],[r,c+1]]
     return ship
 
-
 '''
 checkShip(grid, ship)
 Parameters: 2D list of ints ; 2D list of ints
@@ -93,12 +92,11 @@ Returns: bool
 '''
 def checkShip(grid, ship):
     for i in range(len(ship)):
-        r,c = ship[i][0],ship[i][1] 
+        r,c = ship[i][0],ship[i][1]
         if grid[r][c] == EMPTY_UNCLICKED:
             a = True
         else:
-            a = False
-            return a
+            return False
     return a
 
 '''
