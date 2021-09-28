@@ -29,6 +29,7 @@ def makeModel(data):
     data["cols"] = 10
     data["boardSize"] = 500
     data["numShips"] = 5
+    data["cellSize"] = data["boardSize"]/data["rows"]
     data["computerBoard"] = []
     data["userBoard"] = []
     data["computerBoard"] = emptyGrid(data["rows"], data["cols"])
@@ -43,6 +44,7 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    
     return
 
 
@@ -128,6 +130,7 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    
     return
 
 
@@ -300,5 +303,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
+    #runSimulation(500, 500)
     test.testMakeModel()
