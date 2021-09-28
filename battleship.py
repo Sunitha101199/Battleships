@@ -25,6 +25,15 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def makeModel(data):
+    data["rows"] = 10
+    data["cols"] = 10
+    data["boardSize"] = 500
+    data["numShips"] = 5
+    data["computerBoard"] = []
+    data["userBoard"] = []
+    data["computerBoard"] = emptyGrid(data["rows"], data["cols"])
+    data["userBoard"] = emptyGrid(data["rows"], data["cols"])
+    data["computerBoard"].append(addShips(data["computerBoard"], data["numShips"]))
     return
 
 
@@ -69,7 +78,6 @@ def emptyGrid(rows, cols):
         for j in range(cols):
             gridCols.append(EMPTY_UNCLICKED)#append
     return gridRows
-
 
 '''
 createShip()
@@ -293,4 +301,4 @@ if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
-    test.testCreateShip()
+    test.testMakeModel()
