@@ -25,6 +25,16 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def makeModel(data):
+    data["rows"] = 10
+    data["cols"] = 10
+    data["boardSize"] = 500
+    data["numShips"] = 5
+    data["cellSize"] = data["boardSize"]/data["rows"]
+    data["compGrid"] = []
+    data["userGrid"] = []
+    data["compGrid"] = emptyGrid(data["rows"], data["cols"])
+    data["userGrid"] = emptyGrid(data["rows"], data["cols"])
+    addShips(data["compGrid"], data["numShips"])
     return
 
 
@@ -34,6 +44,7 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    
     return
 
 
@@ -69,7 +80,6 @@ def emptyGrid(rows, cols):
         for j in range(cols):
             gridCols.append(EMPTY_UNCLICKED)#append
     return gridRows
-
 
 '''
 createShip()
@@ -120,6 +130,7 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    
     return
 
 
@@ -292,5 +303,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
-    test.testCreateShip()
+    #runSimulation(500, 500)
+    test.testMakeModel()
