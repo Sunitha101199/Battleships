@@ -30,11 +30,11 @@ def makeModel(data):
     data["boardSize"] = 500
     data["numShips"] = 5
     data["cellSize"] = data["boardSize"]/data["rows"]
-    data["computerBoard"] = []
-    data["userBoard"] = []
-    data["computerBoard"] = emptyGrid(data["rows"], data["cols"])
-    data["userBoard"] = emptyGrid(data["rows"], data["cols"])
-    data["computerBoard"].append(addShips(data["computerBoard"], data["numShips"]))
+    data["compGrid"] = []
+    data["userGrid"] = []
+    data["compGrid"] = emptyGrid(data["rows"], data["cols"])
+    data["userGrid"] = test.testGrid()
+    addShips(data["compGrid"], data["numShips"])
     return
 
 
@@ -44,7 +44,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
-    
+    drawGrid(data, userCanvas, data["userGrid"], True)
+    drawGrid(data, compCanvas, data["compGrid"], True)
     return
 
 
@@ -101,13 +102,12 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
+    count = 0
     for i in range(len(ship)):
         row,col = ship[i][0],ship[i][1]
         if grid[row][col] == EMPTY_UNCLICKED:
-            shipValid = True
-        else:
-            shipValid = False
-    return shipValid
+            count = count+1
+    return count == len(ship)
 
 '''
 addShips(grid, numShips)
@@ -130,7 +130,12 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
-    
+    for row in range(data["rows"]):
+        for col in range(data["cols"]):
+            if grid[row][col] == SHIP_UNCLICKED:
+                canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="yellow")
+            else:
+                canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue")
     return
 
 
@@ -303,5 +308,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    #runSimulation(500, 500)
+    runSimulation(500, 500)
     test.testMakeModel()
