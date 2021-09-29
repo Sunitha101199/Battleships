@@ -33,7 +33,7 @@ def makeModel(data):
     # data["compGrid"] = []
     # data["userGrid"] = []
     data["compGrid"] = emptyGrid(data["rows"], data["cols"])
-    data["userGrid"] = test.testGrid()
+    data["userGrid"] = emptyGrid(data["rows"], data["cols"])
     addShips(data["compGrid"], data["numShips"])
     return
 
