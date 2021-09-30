@@ -147,8 +147,8 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
-
+    
+    return 
 
 '''
 isHorizontal(ship)
@@ -156,8 +156,8 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
-
+   
+        return 
 
 '''
 getClickedCell(data, event)
@@ -306,7 +306,6 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
     test.testMakeModel()
