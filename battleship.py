@@ -12,6 +12,7 @@ project = "Battleship" # don't edit this
 
 from tkinter import *
 import random
+import math
 
 EMPTY_UNCLICKED = 1
 SHIP_UNCLICKED = 2
@@ -177,7 +178,9 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    row = math.floor(event.y / data["cellSize"])
+    col = math.floor(event.x / data["cellSize"])
+    return [row, col]
 
 
 '''
@@ -320,4 +323,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
-    test.testIsHorizontal()
+    test.testGetClickedCell()
