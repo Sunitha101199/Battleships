@@ -37,6 +37,7 @@ def makeModel(data):
     data["userGrid"] = emptyGrid(data["rows"], data["cols"])
     addShips(data["compGrid"], data["numShips"])
     data["tempShips"] = []#emptyGrid(data["rows"], data["cols"])
+    data["numUserShips"] = 0
     return
 
 
@@ -124,7 +125,7 @@ def addShips(grid, numShips):
         if checkShip(grid,ship):
             currentShips +=1
             for j in range(len(ship)):
-                grid[ship[j][0]][ship[j][1]]= SHIP_UNCLICKED
+                grid[ship[j][0]][ship[j][1]] = SHIP_UNCLICKED
     return grid
 
 '''
@@ -219,8 +220,9 @@ def placeShip(data):
     if shipIsValid(data["userGrid"], data["tempShips"]) :
         for j in range(len(data["tempShips"])):
                 addShips(data["userGrid"], data["numShips"])
+                data["numUserShips"]+=1
     else:
-        print("Error")
+        print("Error: Ship is not Valid")
     return
 
 
@@ -230,8 +232,15 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    
-    return
+    if data["numUserShips"] == 5:
+        return
+    if data["tempShips"] == [row, col]:
+        return
+    else:
+        if row==3 and col == 3:
+            placeShip(data)
+        else:
+            return
 
 
 ### WEEK 3 ###
@@ -338,4 +347,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     #runSimulation(500, 500)
-    test.testIsHorizontal()
+    test.testShipIsValid()
