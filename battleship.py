@@ -216,7 +216,11 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
-
+    if shipIsValid(data["userGrid"], data["tempShips"]) :
+        for j in range(len(data["tempShips"])):
+                addShips(data["userGrid"], data["numShips"])
+    else:
+        print("Error")
     return
 
 
@@ -226,6 +230,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
+    
     return
 
 
@@ -333,4 +338,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     #runSimulation(500, 500)
-    test.testShipIsValid()
+    test.testIsHorizontal()
