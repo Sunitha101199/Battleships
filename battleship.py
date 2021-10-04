@@ -163,13 +163,11 @@ Returns: bool
 '''
 def isHorizontal(ship):
     cols = []
-    for col in range(len(ship)):
-        cols.append(ship[col][1])
+    cols = [(ship[col][1] for col in range(len(ship)))]
     cols.sort()
     if cols[0]+1 == cols[1] and cols[1]+1 == cols[2]:
         return True
-    else:
-        return False
+    return False
 
 '''
 getClickedCell(data, event)
