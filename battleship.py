@@ -30,10 +30,10 @@ def makeModel(data):
     data["boardSize"] = 500
     data["numShips"] = 5
     data["cellSize"] = data["boardSize"]/data["rows"]
-    data["compGrid"] = []
-    data["userGrid"] = []
+    # data["compGrid"] = []
+    # data["userGrid"] = []
     data["compGrid"] = emptyGrid(data["rows"], data["cols"])
-    data["userGrid"] = test.testGrid()
+    data["userGrid"] = emptyGrid(data["rows"], data["cols"])
     addShips(data["compGrid"], data["numShips"])
     return
 
@@ -147,8 +147,12 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
-
+    rows = []
+    rows=[(ship[row][0]) for row in range(len(ship))]
+    rows.sort()
+    if rows[0]+1 == rows[1] and rows[1]+1 == rows[2]:
+        return True
+    return False
 
 '''
 isHorizontal(ship)
@@ -156,8 +160,12 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
-
+    cols = []
+    cols = [(ship[col][1] for col in range(len(ship)))]
+    cols.sort()
+    if cols[0]+1 == cols[1] and cols[1]+1 == cols[2]:
+        return True
+    return False
 
 '''
 getClickedCell(data, event)
@@ -306,7 +314,6 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
-    test.testMakeModel()
+    # runSimulation(500, 500)
+    test.testIsHorizontal()
