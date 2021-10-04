@@ -12,6 +12,7 @@ project = "Battleship" # don't edit this
 
 from tkinter import *
 import random
+import math
 
 EMPTY_UNCLICKED = 1
 SHIP_UNCLICKED = 2
@@ -30,11 +31,13 @@ def makeModel(data):
     data["boardSize"] = 500
     data["numShips"] = 5
     data["cellSize"] = data["boardSize"]/data["rows"]
-    data["compGrid"] = []
-    data["userGrid"] = []
+    # data["compGrid"] = []
+    # data["userGrid"] = []
     data["compGrid"] = emptyGrid(data["rows"], data["cols"])
-    data["userGrid"] = test.testGrid()
+    data["userGrid"] = emptyGrid(data["rows"], data["cols"])
     addShips(data["compGrid"], data["numShips"])
+    data["tempShips"] = []#emptyGrid(data["rows"], data["cols"])
+    data["numUserShips"] = 0
     return
 
 
@@ -46,6 +49,7 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data, userCanvas, data["userGrid"], True)
     drawGrid(data, compCanvas, data["compGrid"], True)
+    drawShip(data, userCanvas, test.testShip())
     return
 
 
@@ -121,7 +125,7 @@ def addShips(grid, numShips):
         if checkShip(grid,ship):
             currentShips +=1
             for j in range(len(ship)):
-                grid[ship[j][0]][ship[j][1]]= SHIP_UNCLICKED
+                grid[ship[j][0]][ship[j][1]] = SHIP_UNCLICKED
     return grid
 
 '''
@@ -147,8 +151,14 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
-
+    rows = []
+    for row in range(len(ship)):
+        rows.append(ship[row][0])
+    rows.sort()
+    if rows[0]+1 == rows[1] and rows[1]+1 == rows[2]:
+        return True
+    else:
+        return False
 
 '''
 isHorizontal(ship)
@@ -156,8 +166,14 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
-
+    cols = []
+    for col in range(len(ship)):
+        cols.append(ship[col][1])
+    cols.sort()
+    if cols[0]+1 == cols[1] and cols[1]+1 == cols[2]:
+        return True
+    else:
+        return False
 
 '''
 getClickedCell(data, event)
@@ -165,7 +181,9 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    row = math.floor(event.y / data["cellSize"])
+    col = math.floor(event.x / data["cellSize"])
+    return [row, col]
 
 
 '''
@@ -174,6 +192,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for position in range(len(ship)):
+        canvas.create_rectangle(ship[position][1]*data["cellSize"], ship[position][0]*data["cellSize"], (ship[position][1]*data["cellSize"])+data["cellSize"], (ship[position][0]*data["cellSize"])+data["cellSize"], fill="white")
     return
 
 
@@ -183,8 +203,13 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return
-
+    if len(ship) == 3:
+        if checkShip(grid, ship):
+            if isVertical(ship):
+                return True
+            elif isHorizontal(ship):
+                return True
+    return False
 
 '''
 placeShip(data)
@@ -192,6 +217,14 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+    temp = data["tempShips"]
+    if shipIsValid(data["userGrid"], data["tempShips"]) :
+        for j in temp:
+            data["userGrid"][j[0]][j[1]] = SHIP_UNCLICKED
+        data["numUserShips"]+=1
+    else:
+        print("Error: Ship is not Valid")
+    data["tempShips"] = []
     return
 
 
@@ -201,7 +234,15 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    return
+    if data["numUserShips"] == 5:
+        return
+    if data["tempShips"] == [row, col]:
+        return
+    else:
+        if row==3 and col == 3:
+            placeShip(data)
+        else:
+            return
 
 
 ### WEEK 3 ###
@@ -306,7 +347,6 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
-    test.testMakeModel()
+    #runSimulation(500, 500)
+    test.testShipIsValid()
