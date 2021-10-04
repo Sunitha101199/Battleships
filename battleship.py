@@ -33,13 +33,12 @@ def makeModel(data):
     data["cellSize"] = data["boardSize"]/data["rows"]
     # data["compGrid"] = []
     # data["userGrid"] = []
-    data["compGrid"] = emptyGrid(data["rows"], data["cols"])
-    data["userGrid"] = emptyGrid(data["rows"], data["cols"])
-    addShips(data["compGrid"], data["numShips"])
+    data["compGrid"] = addShips(emptyGrid(data["rows"], data["cols"]),data["numShips"])
+    data["userGrid"] = emptyGrid(data["rows"], data["cols"])#changed test.testShip()
+    # addShips(data["compGrid"], data["numShips"])
     data["tempShips"] = []#emptyGrid(data["rows"], data["cols"])
     data["numUserShips"] = 0
     return
-
 
 '''
 makeView(data, userCanvas, compCanvas)
@@ -49,7 +48,7 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data, userCanvas, data["userGrid"], True)
     drawGrid(data, compCanvas, data["compGrid"], True)
-    drawShip(data, userCanvas, test.testShip())
+    drawShip(data, userCanvas, data["tempShips"])
     return
 
 
@@ -68,6 +67,10 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
+    [row,col] = getClickedCell(data,event)
+    if board == "user":
+        # print(data["tempShips"])
+        clickUserBoard(data,row,col)
     pass
 
 #### WEEK 1 ####
@@ -152,13 +155,11 @@ Returns: bool
 '''
 def isVertical(ship):
     rows = []
-    for row in range(len(ship)):
-        rows.append(ship[row][0])
+    rows = [(ship[col][1]) for col in range(len(ship))]
     rows.sort()
     if rows[0]+1 == rows[1] and rows[1]+1 == rows[2]:
         return True
-    else:
-        return False
+    return False
 
 '''
 isHorizontal(ship)
@@ -167,13 +168,11 @@ Returns: bool
 '''
 def isHorizontal(ship):
     cols = []
-    for col in range(len(ship)):
-        cols.append(ship[col][1])
+    cols = [(ship[col][1]) for col in range(len(ship))]
     cols.sort()
     if cols[0]+1 == cols[1] and cols[1]+1 == cols[2]:
         return True
-    else:
-        return False
+    return False
 
 '''
 getClickedCell(data, event)
@@ -205,9 +204,7 @@ Returns: bool
 def shipIsValid(grid, ship):
     if len(ship) == 3:
         if checkShip(grid, ship):
-            if isVertical(ship):
-                return True
-            elif isHorizontal(ship):
+            if isVertical(ship) or isHorizontal(ship):
                 return True
     return False
 
@@ -217,12 +214,15 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
-    if shipIsValid(data["userGrid"], data["tempShips"]) :
-        for j in range(len(data["tempShips"])):
-                addShips(data["userGrid"], data["numShips"])
-                data["numUserShips"]+=1
+    temp = data["tempShips"]
+    if shipIsValid(data["userGrid"], data["tempShips"]):
+        for j in temp:
+            data["userGrid"][j[0]][j[1]] = SHIP_UNCLICKED
+                # addShips(data["userGrid"], data["numShips"])
+        data["numUserShips"]+=1
     else:
         print("Error: Ship is not Valid")
+    data["tempShips"] = []
     return
 
 
@@ -232,15 +232,15 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    if data["numUserShips"] == 5:
+    if data["numUserShips"] == data["numShips"]:
+        print("Start playing the game!")
         return
-    if data["tempShips"] == [row, col]:
+    if [row, col] in data["tempShips"]:
         return
-    else:
-        if row==3 and col == 3:
-            placeShip(data)
-        else:
-            return
+    data["tempShips"].append([row,col])
+    if len(data["tempShips"]) == 3:
+        placeShip(data)
+    return
 
 
 ### WEEK 3 ###
@@ -346,5 +346,5 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
-    #runSimulation(500, 500)
-    test.testShipIsValid()
+    # runSimulation(500, 500)
+    test.testIsHorizontal()
