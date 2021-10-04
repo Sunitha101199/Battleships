@@ -217,12 +217,14 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+    temp = data["tempShips"]
     if shipIsValid(data["userGrid"], data["tempShips"]) :
-        for j in range(len(data["tempShips"])):
-                addShips(data["userGrid"], data["numShips"])
-                data["numUserShips"]+=1
+        for j in temp:
+            data["userGrid"][j[0]][j[1]] = SHIP_UNCLICKED
+        data["numUserShips"]+=1
     else:
         print("Error: Ship is not Valid")
+    data["tempShips"] = []
     return
 
 
