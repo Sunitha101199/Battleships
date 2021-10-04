@@ -148,13 +148,11 @@ Returns: bool
 '''
 def isVertical(ship):
     rows = []
-    for row in range(len(ship)):
-        rows.append(ship[row][0])
+    rows=[(ship[row][0]) for row in range(len(ship))]
     rows.sort()
     if rows[0]+1 == rows[1] and rows[1]+1 == rows[2]:
         return True
-    else:
-        return False
+    return False
 
 '''
 isHorizontal(ship)
