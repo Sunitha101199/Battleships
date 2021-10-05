@@ -38,6 +38,7 @@ def makeModel(data):
     # addShips(data["compGrid"], data["numShips"])
     data["tempShips"] = []#emptyGrid(data["rows"], data["cols"])
     data["numUserShips"] = 0
+    data["winner"] = None
     return
 
 '''
@@ -268,7 +269,6 @@ def updateBoard(data, board, row, col, player):
     elif board[row][col] == EMPTY_UNCLICKED and player == "comp":
         board[row][col] = EMPTY_CLICKED
     return
-
 
 '''
 runGameTurn(data, row, col)
