@@ -288,7 +288,13 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    return
+    row = random.randint(0,9)
+    col = random.randint(0,9)
+    for r in range(10):
+        for c in range(10):
+            while board[r][c] == EMPTY_UNCLICKED:
+                return [r, c]
+    return [row,col]
 
 '''
 isGameOver(board)
@@ -365,4 +371,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
-    test.testUpdateBoard()
+    test.testGetComputerGuess()
