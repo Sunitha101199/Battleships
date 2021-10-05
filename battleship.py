@@ -302,7 +302,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
-    return
+    for row in range(10):
+        for col in range(10):
+            if board[row][col] == SHIP_UNCLICKED:
+                return False
+    return True
 
 
 '''
@@ -371,4 +375,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     # runSimulation(500, 500)
-    test.testGetComputerGuess()
+    test.testIsGameOver()
