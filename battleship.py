@@ -364,5 +364,5 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
-    # test.testUpdateBoard()
+    # runSimulation(500, 500)
+    test.testUpdateBoard()
