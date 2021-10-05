@@ -47,7 +47,7 @@ Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data, userCanvas, data["userGrid"], True)
-    drawGrid(data, compCanvas, data["compGrid"], True)
+    drawGrid(data, compCanvas, data["compGrid"], False)
     drawShip(data, userCanvas, data["tempShips"])
     return
 
@@ -71,6 +71,8 @@ def mousePressed(data, event, board):
     if board == "user":
         # print(data["tempShips"])
         clickUserBoard(data,row,col)
+    if board == "comp":
+        runGameTurn(data,row,col)
     pass
 
 #### WEEK 1 ####
@@ -141,8 +143,14 @@ def drawGrid(data, canvas, grid, showShips):
         for col in range(data["cols"]):
             if grid[row][col] == SHIP_UNCLICKED:
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="yellow")
+            elif grid[row][col] == SHIP_CLICKED:
+                canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="red")
+            elif grid[row][col] == EMPTY_CLICKED:
+                canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="white")
             else:
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue")
+    if showShips == False and grid[row][col] == SHIP_UNCLICKED:
+        canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue") 
     return
 
 
@@ -251,6 +259,14 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
+    if board[row][col] == SHIP_UNCLICKED and player == "user":
+        board[row][col] = SHIP_CLICKED
+    elif board[row][col] == SHIP_UNCLICKED and player == "comp":
+        board[row][col] = SHIP_CLICKED
+    elif board[row][col] == EMPTY_UNCLICKED and player == "user":
+        board[row][col] = EMPTY_CLICKED
+    elif board[row][col] == EMPTY_UNCLICKED and player == "comp":
+        board[row][col] = EMPTY_CLICKED
     return
 
 
@@ -260,6 +276,9 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
+    if data["compGrid"][row][col] == SHIP_CLICKED or data["compGrid"][row][col] == EMPTY_CLICKED:
+        return
+    updateBoard(data,data["compGrid"],row,col,"user")
     return
 
 
@@ -270,7 +289,6 @@ Returns: list of ints
 '''
 def getComputerGuess(board):
     return
-
 
 '''
 isGameOver(board)
@@ -347,4 +365,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
-    # test.testIsHorizontal()
+    # test.testUpdateBoard()
