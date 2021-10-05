@@ -148,10 +148,10 @@ def drawGrid(data, canvas, grid, showShips):
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="red")
             elif grid[row][col] == EMPTY_CLICKED:
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="white")
-            else:
+            elif grid[row][col] == EMPTY_UNCLICKED:
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue")
-    if showShips == False and grid[row][col] == SHIP_UNCLICKED:
-        canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue") 
+            if showShips == False and grid[row][col] == SHIP_UNCLICKED:
+                canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue") 
     return
 
 
@@ -164,9 +164,10 @@ Returns: bool
 '''
 def isVertical(ship):
     rows = []
-    rows = [(ship[col][1]) for col in range(len(ship))]
+    rows = [(ship[row][0]) for row in range(len(ship))]
     rows.sort()
-    if rows[0]+1 == rows[1] and rows[1]+1 == rows[2]:
+    cols = [(ship[col][1]) for col in range(len(ship))]
+    if rows[0]+1 == rows[1] and rows[1]+1 == rows[2] and cols[0]==cols[1]==cols[2]:
         return True
     return False
 
@@ -179,7 +180,8 @@ def isHorizontal(ship):
     cols = []
     cols = [(ship[col][1]) for col in range(len(ship))]
     cols.sort()
-    if cols[0]+1 == cols[1] and cols[1]+1 == cols[2]:
+    rows = [(ship[row][0]) for row in range(len(ship))]
+    if cols[0]+1 == cols[1] and cols[1]+1 == cols[2] and rows[0]==rows[1]==rows[2]:
         return True
     return False
 
@@ -211,10 +213,9 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    if len(ship) == 3:
-        if checkShip(grid, ship):
-            if isVertical(ship) or isHorizontal(ship):
-                return True
+    # if len(ship) == 3:
+    if checkShip(grid, ship) and (isVertical(ship) or isHorizontal(ship)):
+        return True
     return False
 
 '''
@@ -260,13 +261,9 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
-    if board[row][col] == SHIP_UNCLICKED and player == "user":
+    if board[row][col] == SHIP_UNCLICKED:
         board[row][col] = SHIP_CLICKED
-    elif board[row][col] == SHIP_UNCLICKED and player == "comp":
-        board[row][col] = SHIP_CLICKED
-    elif board[row][col] == EMPTY_UNCLICKED and player == "user":
-        board[row][col] = EMPTY_CLICKED
-    elif board[row][col] == EMPTY_UNCLICKED and player == "comp":
+    elif board[row][col] == EMPTY_UNCLICKED:
         board[row][col] = EMPTY_CLICKED
     return
 
@@ -290,10 +287,9 @@ Returns: list of ints
 def getComputerGuess(board):
     row = random.randint(0,9)
     col = random.randint(0,9)
-    for r in range(10):
-        for c in range(10):
-            while board[r][c] == EMPTY_UNCLICKED:
-                return [r, c]
+    while board[row][col] == EMPTY_CLICKED or board[row][col] == SHIP_CLICKED:
+        row = random.randint(0,9)
+        col = random.randint(0,9)  
     return [row,col]
 
 '''
@@ -370,5 +366,5 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
-    test.testGetComputerGuess()
+    runSimulation(500, 500)
+    # test.testGetComputerGuess()
