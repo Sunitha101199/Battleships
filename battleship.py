@@ -329,9 +329,11 @@ def drawGameOver(data, canvas):
     if data["winner"] == "user":
         canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Congratulations...You won! Press Enter to play again.", font="Times 30", anchor="center")
     elif data["winner"]=="comp":
-        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="You lost! Press Enter to play again.", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/3,data["boardSize"]/3,text ="You lost!", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Press Enter to play again.", font="Times 30", anchor="center")
     elif data["winner"]=="draw":
-        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="It's a Draw! Press Enter to play again.", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/3,data["boardSize"]/3,text ="It's a Draw!", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Press Enter to play again.", font="Times 30", anchor="center")
     return
 
 
@@ -391,5 +393,5 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
-    # runSimulation(500, 500)
-    test.testIsGameOver()
+    runSimulation(500, 500)
+    # test.testIsGameOver()
