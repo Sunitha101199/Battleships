@@ -39,6 +39,8 @@ def makeModel(data):
     data["tempShips"] = []#emptyGrid(data["rows"], data["cols"])
     data["numUserShips"] = 0
     data["winner"] = None
+    data["maxNumTurns"] = (data["rows"]*data["cols"])/2
+    data["currentNumTurns"] = 0
     return
 
 '''
@@ -283,6 +285,9 @@ def runGameTurn(data, row, col):
     if data["compGrid"][row][col] == SHIP_CLICKED or data["compGrid"][row][col] == EMPTY_CLICKED:
         return
     updateBoard(data,data["compGrid"],row,col,"user")
+    data["currentNumTurns"]+=1
+    if data["currentNumTurns"]==data["maxNumTurns"]:
+        data["winner"] = "draw"
     return
 
 
@@ -321,6 +326,8 @@ def drawGameOver(data, canvas):
         canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Congratulations...You won!", font="Times 30", anchor="center")
     elif data["winner"]=="comp":
         canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="You lost!", font="Times 30", anchor="center")
+    elif data["winner"]=="draw":
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="It's a Draw!", font="Times 30", anchor="center")
     return
 
 
