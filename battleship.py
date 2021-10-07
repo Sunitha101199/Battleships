@@ -74,15 +74,13 @@ Returns: None
 '''
 def mousePressed(data, event, board):
     if data["winner"] == None:
-        [row,col] = getClickedCell(data,event)
-    if board == "user":
-        # print(data["tempShips"])
-        clickUserBoard(data,row,col)
-    if board == "comp":
-        runGameTurn(data,row,col)
-    if data["winner"] != None:
+        row,col = getClickedCell(data,event)
+        if board == "user":
+            clickUserBoard(data,row,col)
+        elif board == "comp":
+            runGameTurn(data,row,col)
+    else:
         return
-    pass
 
 #### WEEK 1 ####
 
@@ -160,6 +158,7 @@ def drawGrid(data, canvas, grid, showShips):
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue")
             if showShips == False and grid[row][col] == SHIP_UNCLICKED:
                 canvas.create_rectangle(col*data["cellSize"], row*data["cellSize"], (col*data["cellSize"])+data["cellSize"], (row*data["cellSize"])+data["cellSize"], fill="blue") 
+
     return
 
 
@@ -287,13 +286,12 @@ def runGameTurn(data, row, col):
     if data["compGrid"][row][col] == SHIP_CLICKED or data["compGrid"][row][col] == EMPTY_CLICKED:
         return
     updateBoard(data,data["compGrid"],row,col,"user")
-    getComputerGuess(data["compGrid"])
-    updateBoard(data,data["userGrid"],row,col,"comp")
+    rows, cols = getComputerGuess(data["userGrid"])
+    updateBoard(data,data["userGrid"],rows,cols,"comp")
     data["currentNumTurns"]+=1
     if data["currentNumTurns"]==data["maxNumTurns"]:
         data["winner"] = "draw"
     return
-
 
 '''
 getComputerGuess(board)
@@ -301,11 +299,14 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    row = random.randint(0,9)
-    col = random.randint(0,9)
-    while board[row][col] == EMPTY_UNCLICKED or board[row][col] == SHIP_UNCLICKED:
+    flag = True
+    while flag:
         row = random.randint(0,9)
         col = random.randint(0,9)
+        if board[row][col] == EMPTY_CLICKED or board[row][col] == SHIP_CLICKED:
+            flag = True
+        else:
+            flag=False
     return [row,col]
 
 '''
@@ -327,11 +328,15 @@ Returns: None
 '''
 def drawGameOver(data, canvas):
     if data["winner"] == "user":
-        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Congratulations...You won! Press Enter to play again.", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/4,text ="Congratulations..", font="Times 35 bold", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/3+20,text ="You Won!", font="Times 35 bold", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Press Enter to play again.", font="Times 30 bold", anchor="center")
     elif data["winner"]=="comp":
-        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="You lost! Press Enter to play again.", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/3,data["boardSize"]/3,text ="You lost!", font="Times 40 bold", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Press Enter to play again.", font="Times 30 bold", anchor="center")
     elif data["winner"]=="draw":
-        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="It's a Draw! Press Enter to play again.", font="Times 30", anchor="center")
+        canvas.create_text(data["boardSize"]/3,data["boardSize"]/3,text ="It's a Draw!", font="Times 40 bold", anchor="center")
+        canvas.create_text(data["boardSize"]/2,data["boardSize"]/2,text ="Press Enter to play again.", font="Times 30 bold", anchor="center")
     return
 
 
